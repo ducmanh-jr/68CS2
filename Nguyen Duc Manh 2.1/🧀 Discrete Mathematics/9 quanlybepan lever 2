@@ -1,0 +1,90 @@
+
+#include <iostream>
+#include <string>
+#include <algorithm>
+
+using namespace std;
+
+struct NguyenLieu {
+    string ten;
+    double gia;
+};
+
+struct ChiPhiNgay {
+    NguyenLieu* nguyenlieu;
+    int soNguyenLieu;
+    double tongChiPhi;
+};
+
+void nhapNguyenLieu(NguyenLieu& nguyenLieu, int index) {
+    cout << "Nhập tên nguyên liệu " << "a" << index << ": ";
+    cin >> nguyenLieu.ten;
+    cout << "Nhập giá cho " << nguyenLieu.ten << ": ";
+    cin >> nguyenLieu.gia;
+}
+
+void nhapChiPhiNgay(ChiPhiNgay& chiPhiNgay, int ngay) {
+    cout << "Nhập số lượng nguyên liệu cho ngày " << ngay << ": ";
+    cin >> chiPhiNgay.soNguyenLieu;
+
+    chiPhiNgay.nguyenlieu = new NguyenLieu[chiPhiNgay.soNguyenLieu];
+
+    for (int i = 0; i < chiPhiNgay.soNguyenLieu; ++i) {
+        nhapNguyenLieu(chiPhiNgay.nguyenlieu[i], i + 1);
+        chiPhiNgay.tongChiPhi += chiPhiNgay.nguyenlieu[i].gia;
+    }
+}
+
+void xemChiPhiNgay(const ChiPhiNgay& chiPhiNgay, int ngay) {
+    cout << "Chi phí ngày " << ngay << ":\n";
+    for (int i = 0; i < chiPhiNgay.soNguyenLieu; ++i) {
+        cout << "a" << i + 1 << ": $" << chiPhiNgay.nguyenlieu[i].gia << endl;
+    }
+    cout << "Tổng chi phí ngày " << ngay << ": $" << chiPhiNgay.tongChiPhi << endl;
+}
+
+void timKiemNguyenLieu(const ChiPhiNgay* chiPhiNgay, int soNgay, const string& tenNguyenLieu) {
+    for (int i = 0; i < soNgay; ++i) {
+        for (int j = 0; j < chiPhiNgay[i].soNguyenLieu; ++j) {
+            if (chiPhiNgay[i].nguyenlieu[j].ten == tenNguyenLieu) {
+                cout << "Nguyên liệu " << tenNguyenLieu << " được sử dụng vào ngày " << i + 1 << endl;
+            }
+        }
+    }
+}
+
+double tinhTongChiPhi(const ChiPhiNgay* chiPhiNgay, int soNgay) {
+    double tongChiPhi = 0.0;
+    for (int i = 0; i < soNgay; ++i) {
+        tongChiPhi += chiPhiNgay[i].tongChiPhi;
+    }
+    return tongChiPhi;
+}
+
+int main() {
+    int soNgay;
+    cout << "Nhập số ngày: ";
+    cin >> soNgay;
+
+    ChiPhiNgay* chiPhiNgay = new ChiPhiNgay[soNgay];
+
+    for (int i = 0; i < soNgay; ++i) {
+        nhapChiPhiNgay(chiPhiNgay[i], i + 1);
+    }
+
+    for (int i = 0; i < soNgay; ++i) {
+        xemChiPhiNgay(chiPhiNgay[i], i + 1);
+    }
+
+    string tenNguyenLieu;
+    cout << "Nhập tên nguyên liệu cần tìm: ";
+    cin >> tenNguyenLieu;
+    timKiemNguyenLieu(chiPhiNgay, soNgay, tenNguyenLieu);
+
+    double tongChiPhi = tinhTongChiPhi(chiPhiNgay, soNgay);
+    cout << "Tổng chi phí trong tháng: $" << tongChiPhi << endl;
+
+    delete[] chiPhiNgay;
+
+    return 0;
+}

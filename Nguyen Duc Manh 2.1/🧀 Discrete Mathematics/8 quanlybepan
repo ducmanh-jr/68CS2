@@ -1,0 +1,61 @@
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+struct a1 {// a1 = NL
+    string s1; // s1 = ten
+    double s2; // s2 = chiphi
+};
+
+struct a2 { // a2 = NVL
+    string s3;// a3 = ngay
+    a1 a11;// q11 = nguyenLieu9999
+};
+
+a2 menu;
+
+void thema2(string s3) {
+    menu.s3 = s3;
+}
+
+void hienThiMenu() {
+    cout << "Ngay: " << menu.s3 << endl;
+    cout << "Nguyen lieu:" << endl;
+    cout << "- " << menu.a11.s1 << ": " << menu.a11.s2 << endl;
+    cout << endl;
+}
+
+void timKiema1(string s1) {
+    if (menu.a11.s1 == s1) {
+        cout << "Tim thay nguyen lieu trong ngay " << menu.s3 << ": " << menu.a11.s2 << endl;
+    } else {
+        cout << "Khong tim thay nguyen lieu." << endl;
+    }
+}
+
+double tinhTongs2() {
+    return menu.a11.s2;
+}
+
+int main() {
+    int soa1, sos3;
+    cout << "Nhap so luong nguyen lieu: ";
+    cin >> soa1;
+    cout << "Nhap so ngay lam viec: ";
+    cin >> sos3;
+
+    for (int i = 0; i < sos3; i++) {
+        string s3;
+        cout << "Nhap ngay cho ngay lam viec " << i + 1 << ": ";
+        cin >> s3;
+        thema2(s3);
+
+        string s1;
+        double s2;
+        cout << "Nhap ten va chi phi cua nguyen lieu trong ngay " << s3 << ": ";
+        cin >> s1 >> s2;
+        menu.a11.s1 = s1;
+        menu.a11.s2 = s2;
+    }
+}
