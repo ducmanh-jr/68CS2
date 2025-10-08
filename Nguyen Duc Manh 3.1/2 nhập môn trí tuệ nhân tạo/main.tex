@@ -1,0 +1,518 @@
+\documentclass{article}
+\usepackage[utf8]{vietnam}
+\usepackage{graphicx}
+\usepackage{hyperref}
+
+
+\begin{document}
+%page bìa
+\begin{titlepage}
+\begin{center}
+\textbf{BỘ GIÁO DỤC VÀ ĐÀO TẠO}\\[0.5cm]
+\textbf{TRƯỜNG ĐẠI HỌC XÂY DỰNG HÀ NỘI}\\[0.5cm]
+\textbf{KHOA CÔNG NGHỆ THÔNG TIN}\\[1cm]
+
+\includegraphics[width=0.4\textwidth]{ảnh/LOGO_DHXD.png}\\[1cm]
+
+\Large\textbf{BÁO CÁO NHẬP MÔN TRÍ TUỆ NHÂN TẠO}\\[0.5cm]
+\Large\textbf{ĐỀ TÀI 2: THUẬT TOÁN A*}\\[1cm]
+
+\begin{tabular}{rl}
+\textbf{Giảng viên bộ môn:} & Phạm Hồng Phong \\
+\textbf{Lớp học phần:} & 68CS3 \\
+\textbf{Thành viên:} & Đỗ Công Trí - 0214268 \\
+ & Đào Đăng Quang - 0212168 \\
+ & Phạm Văn Thắng - 0213168 \\
+ & Nguyễn Tuấn Anh - 0203868 \\
+ & Nguyễn Đức Mạnh - 0210668 \\
+\end{tabular}
+
+\vfill
+Hà Nội, 2025
+\end{center}
+\end{titlepage}
+%page Mục lục
+\newpage
+\tableofcontents
+\newpage
+\section*{Lời Mở đầu}
+\addcontentsline{toc}{chapter}{Lời Mở Đầu}
+
+Trong ngành khoa học máy tính, một \textit{giải thuật tìm kiếm} 
+là một thuật toán lấy đầu vào là một bài toán và trả về kết quả là một lời giải cho bài toán đó, 
+thường là sau khi cân nhắc giữa một loạt các lời giải có thể. 
+Tập hợp tất cả các lời giải có thể cho bài toán được gọi là \textbf{không gian tìm kiếm}. 
+
+Có những thuật toán tìm kiếm \textit{sơ đẳng} không có thông tin, 
+đây là những phương pháp đơn giản và trực quan, 
+trong khi đó các thuật toán tìm kiếm có thông tin sử dụng hàm đánh giá heuristic 
+giúp ta giảm đáng kể thời gian cần thiết cho việc tìm kiếm lời giải.
+
+Để áp dụng được các giải thuật tìm kiếm, 
+ta cần chuyển không gian tìm kiếm về dạng đồ thị. 
+Với dạng đồ thị ta sẽ nắm bắt những mối liên hệ, những ảnh hưởng giữa các trạng thái của bài toán 
+một cách nhanh chóng và ngắn gọn. 
+
+Trong phạm vi bài báo cáo, nhóm chúng em xin trình bày ba thuật toán tìm kiếm cơ bản và tiêu biểu 
+dựa trên lý thuyết đồ thị, đó là: 
+\begin{itemize}
+    \item Tìm kiếm theo chiều rộng (BFS),
+    \item Tìm kiếm theo chiều sâu (DFS),
+    \item Tìm kiếm A*.
+\end{itemize}
+
+Qua đó, chúng em sẽ áp dụng giải thuật tìm kiếm A* để giải bài toán 8-puzzle, 
+một bài toán quen thuộc với những người lập trình. 
+Nhóm sẽ đưa ra cơ chế hoạt động của thuật toán, 
+ưu nhược điểm cũng như độ phức tạp của các thuật toán trên.
+
+\vspace{0.5cm}
+\begin{flushright}
+Nhóm xin gửi lời cảm ơn chân thành đến thầy \textbf{Phạm Hồng Phong} \\
+đã tận tình hướng dẫn nhóm để hoàn thiện đề tài một cách chi tiết nhất. \\[0.5cm]
+
+\textit{Xin chân thành cảm ơn!}
+\end{flushright}
+
+% Content page
+\newpage
+\section{Giới thiệu bài toán 8-Puzzle}
+\subsection{Giới thiệu tổng quát}
+\textit{Bài toán 8-Puzzle} là một trò chơi giải đố trí tuệ cổ điển và phổ biến. Đây là một trò chơi đơn giản nhưng đầy thách thức, thường được sử dụng để kiểm tra và phát triển các thuật toán tìm kiếm và trí tuệ nhân tạo. Dưới đây là một giới thiệu tổng quan về trò chơi này: Trò chơi 8 quân cờ thường chơi trên một bảng vuông 3x3 với 8 ô và một ô trống. Mục tiêu của trò chơi là sắp xếp các ô số từ 1 đến 8 theo một thứ tự cụ thể hoặc theo một trạng thái mà người chơi muốn di chuyển mỗi ô số hoặc ô trống sang mộtô trống khác, nhưng chỉ có thể di chuyển 1 bước một lần. Di chuyển có thể thực hiện theo hướng lên, xuống, trái, hoặc phải. Mục tiêu của người chơi là di chuyển các ô số để đạt được trạng thái cuối cùng, thường là một sắp xếp theo thứ tự tăng dần từ trái sang phải và từ trên xuống dưới. Để giải quyết bài toán, ta có thể áp dụng các thuật toán tìm kiếm như A*, Tìm kiếm theo chiều sâu (DFS), tìm kiếm theo chiều rộng (BFS) để đánh giá và lựa chọn các nước di chuyển.
+
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.3\textwidth]{ảnh/Picture1.png}
+\end{figure}
+
+
+\subsection{Một số ứng dụng của bài toán 8-puzzle}
+\textit{Bài toán 8-puzzle}, mặc dù có vẻ đơn giản, nhưng có nhiều ứng dụng quan trọng trong các lĩnh vực khác nhau, đặc biệt là trong trí tuệ nhân tạo và khoa học máy tính. Dưới đây là một số ứng dụng chính của bài toán 8-puzzle:
+\begin{itemize}
+    \item Nghiên cứu Thuật toán Tìm kiếm và Giải quyết Vấn đề: bài toán 8-puzzle thường được sử dụng để minh họa cho các thuật toán tìm kiếm như tìm kiếm theo chiều rộng (BFS), tìm kiếm theo chiều sâu (DFS), A*, và các thuật toán khác.
+    \item Robot và tự động hóa: nguyên lí của bài toán 8-puzzle có thể áp dụng trong việc lập kế hoạch di chuyển cho robot. Các thuật toán giải bài toán 8-puzzle cũng có thể giúp tối ưu hóa đường đi của robot.
+    \item Phát triển trò chơi và giải trí: bài toán 8-puzzle và các biến thể của nó như là 15-puzzle thường được sử dụng trong các trò chơi giải đố và logic để thử thách người chơi. Thông qua 8-puzzle người chơi có thể rèn luyện tư duy logic và khả năng giải quyết vấn đề của mình Bài toán 8-puzzle không chỉ là một bài toán học thuật mà còn có nhiều ứng dụng thực tiễn trong nhiều lĩnh vực khác nhau. 
+\end{itemize} 
+
+
+Việc nghiên cứu và giải quyết bài toán này giúp phát triển các kỹ năng và công nghệ mới, áp dụng vào các bài toán phức tạp hơn trong thực tế 
+Ta có thể dùng các thuật toán tìm kiếm như BFS, DFS, A*,… để giải quyết bài toán tìm kiếm trạng thái của puzzle trên. Nhưng các thuật toán tìm kiếm không có thông tin như BFS, DFS,… để đi từ trạng thái ban đầu đến trạng thái đích sẽ rất lâu và cần rất nhiều bước di chuyển để đạt được vì 2 thuật toán này sẽ duyệt từng trạng thái được sinh ra từ trạng thái ban đầu của nó. Vì vậy, các thuật toán tìm kiếm có thông tin như Greedy, A*,… sẽ giúp ta giải quyết bàitoán này nhanh hơn và ít bước di chuyển hơn so với các thuật toán tìm kiếm không có thông tin. Nhóm em đã chọn thuật toán tìm kiếm có thông tin A* dựa theo hàm đánh giá Heuristic để đánh giá và tìm ra trạng thái tối ưu nhất trong các trạng thái được mở rộng nêntối ưu được các bước di chuyển cũng như tiết kiệm thời gian giải quyết cho bài toán tìm trạng thái đích của trò chơi ô chữ 8 số này.
+\section{Thuật toán A*}
+\subsection{Giới thiêu tổng quát}
+\textit{Thuật toán A* (A-star) }là một phương pháp tìm kiếm thông minh được sử dụng trong trí tuệ nhân tạo, đặc biệt trong các bài toán tìm đường đi ngắn nhất giữa hai điểm trong không gian đồ thị. \textit{Thuật toán A*} kết hợp một cách hiệu quả hai yếu tố quan trọng: Chi phí thực tế từ điểm bắt đầu đến điểm hiện tại và dự đoán chi phí còn lại từ điểm hiện tại đến đích. Chính sự kết hợp này giúp A* tìm ra lộ trình tối ưu với tốc độ nhanh chóng và độ chính xác cao.
+Cấu trúc cơ bản của \textit{Thuật toán A*} bao gồm ba thành phần quan trọng:
+\begin{itemize}
+    \item g(n): Chi phí thực tế từ điểm bắt đầu đến điểm n. Đây là chi phí đã được tính toán dựa trên các bước di chuyển đã thực hiện, phản ánh mức độ tốn kém của quá trình di chuyển cho đến thời điểm hiện tại.
+    \item h(n): Ước tính chi phí từ điểm n đến đích, hay còn gọi là hàm heuristic. Hàm này giúp thuật toán đưa ra dự đoán về chi phí còn lại, từ đó xác định con đường nào sẽ có khả năng đưa ta đến đích một cách hiệu quả nhất.
+    \item f(n) = g(n) + h(n): Tổng chi phí tại điểm n, bao gồm chi phí thực tế (g(n) và chi phí ước tính đến đích (h(n)). Hàm f(n) đóng vai trò quyết định trong việc lựa chọn điểm tiếp theo để di chuyển, ưu tiên các điểm có tổng chi phí thấp nhất, nhằm đảm bảo lộ trình tìm kiếm nhanh chóng và tối ưu.
+\end{itemize}
+Nhờ vào việc kết hợp cả chi phí thực tế và dự đoán, thuật toán A* có khả năng tìm ra lộ trình tối ưu trong hầu hết các bài toán tìm kiếm đường đi, đặc biệt là trong các môi trường phức tạp với nhiều lựa chọn.
+\subsection{Nguyên lý hoạt động}
+Thuật toán A* hoạt động thông qua một quy trình lặp lại, liên tục mở rộng các nút trong đồ thị cho đến khi tìm ra được đường đi tối ưu. Quy trình này có thể được chia thành các bước chính như sau:
+
+\textbf{Khởi tạo}: 
+\textit{Thuật toán A*} bắt đầu bằng việc đưa điểm bắt đầu vào danh sách mở (open list). Mỗi điểm trong danh sách này sẽ chứa các thông tin về chi phí g(n), hàm heuristic h(n) và tổng chi phí f(n).
+
+\textbf{Lặp lại tìm kiếm}:
+Mỗi vòng lặp, \textit{Thuật toán A*} sẽ chọn điểm có giá trị f(n) nhỏ nhất trong danh sách mở. Điểm này được gọi là nút hiện tại và thuật toán sẽ kiểm tra tất cả các điểm kế tiếp có thể di chuyển đến từ nút này. Sau khi kiểm tra, các điểm này sẽ được đưa vào:
+\begin{itemize}
+    \item Danh sách đóng (closed list): Nếu điểm đó đã được kiểm tra trước, không cần kiểm tra lại.
+    \item Danh sách mở (open list): Nếu điểm đó chưa được kiểm tra, sẽ được thêm vào danh sách mở để tiếp tục xử lý sau này.
+\end{itemize}
+
+\textbf{Tính toán f(n)}:
+Khi thuật toán lựa chọn một điểm trong danh sách mở, nó sẽ tính toán giá trị f(n) cho các điểm kế tiếp (nút con) dựa trên công thức f(n) = g(n) + h(n). Sau đó, giá trị này sẽ được so sánh với giá trị f(n) của điểm đã được kiểm tra trước đó.
+
+Nếu đường đi mới đến một điểm có chi phí tổng f(n) thấp hơn so với đường đi cũ, thuật toán sẽ cập nhật lại thông tin và lựa chọn đường đi mới này. Điều này giúp thuật toán tìm ra đường đi tối ưu và tối thiểu hóa chi phí.
+\textbf{Kết thúc}:
+Quá trình tìm kiếm tiếp tục cho đến khi một trong hai điều kiện sau xảy ra:
+\begin{itemize}
+    \item Thuật toán tìm thấy điểm đích và đường đi tối ưu được xác định.
+    \item Danh sách mở trống, tức là không còn điểm nào khả thi để kiểm tra và không có đường đi nào dẫn đến đích.
+\end{itemize}
+Điều khiến \textit{thuật toán A*} trở nên hiệu quả và mạnh mẽ chính là việc sử dụng hàm heuristic h(n). Nếu hàm này được thiết kế hợp lý, \textit{thuật toán A*} sẽ có thể tìm ra đường đi tối ưu trong thời gian rất ngắn. Đặc biệt, nếu hàm heuristic là “thực tế (admissible)”, tức là không bao giờ ước lượng chi phí quá cao so với giá trị thực tế, \textit{thuật toán A*} sẽ luôn tìm ra được giải pháp tối ưu.
+\subsection{Cài đặt thuật toán}
+\begin{enumerate}
+    \item Open: tập các trạng thai đã được sinh ra nhưng chưa được xét đến.
+    \item Close: tập các trạng thái đã được xét đến.
+    \item Cost(p,q): là khoảng cách giữa p và q.
+    \item g(p): khoảng cách từ trạng thái đầu đến trạng thái hiện tại p.
+    \item h(p): giá trị được lượng giá từ trạng thai hiện tại đến trạng thái đích.
+    \item f(p) = g(p) + h(p)
+
+\end{enumerate}
+\textbf{Bước 1}:
+\begin{itemize}
+    \item Open = [S]
+    \item Close = []
+
+\end{itemize}
+ \textbf{Bước 2}: while (Open != [])
+    \begin{itemize}
+        \item Chọn trạng thái(đỉnh) tốt nhất p trong Open ( xóa p khỏi Open).
+        \item Nếu p là trạng thái kết thúc thì thoát.
+        \item Chuyển p qua Close và tạo ra các trạng thai kế tiếp q sau p.
+        \item Nếu q đã có trong Open
+        
+         Nếu g(p) > g(p) + Cost(p,q)
+         
+            g(q) = g(p) + Cost(p,q)
+            
+            f(q) = g(q) + h(q)
+            
+            prev(q) = p (đỉnh cha của q là p)
+        \item Nếu q chưa có trong Open
+        
+                g(q) = g(p) + cost (p,q)
+
+                f(q) = g(q) + h(q)
+
+                prev (q) = p
+
+                Thêm q vào Open				
+
+        \item Nếu q có trong Close 
+
+                Nếu g(q) > g(p) + Cost(p,q)
+
+                Bỏ q khỏi Close
+
+                Thêm q vào Open
+
+
+    \end{itemize}
+\textbf{Bước 3}: Kết thúc vòng lặp
+\section{Cài đặt thuật toán A* cho bài toán 8-puzzle}
+
+Trong việc giải quyết bài toán 8-puzzle, có thể áp dụng nhiều phương pháp tìm kiếm khác nhau 
+như tìm kiếm theo chiều rộng (BFS), tìm kiếm theo chiều sâu (DFS) hoặc tìm kiếm có thông tin như A*. 
+Tuy nhiên, BFS và DFS đều là các thuật toán tìm kiếm mù (blind search), không tận dụng được thông tin về trạng thái đích. 
+Do đó, để đi từ trạng thái ban đầu đến trạng thái đích, hai thuật toán này sẽ phải duyệt qua rất nhiều trạng thái trung gian, 
+tốn nhiều thời gian và số bước di chuyển.
+
+Trong khi đó, A* là một thuật toán tìm kiếm có thông tin (informed search) 
+kết hợp giữa chi phí thực tế đã đi và chi phí ước lượng còn lại. 
+Điều này giúp quá trình tìm kiếm hiệu quả hơn, rút ngắn số lần mở rộng nút và dẫn đến lời giải tối ưu.
+
+\textbf{Các bước tiến hành cài đặt A* cho bài toán 8-puzzle}
+
+\textbf{Xác định đầu vào, đầu ra và điều kiện dừng}
+\begin{itemize}
+    \item \textbf{Đầu vào:} trạng thái xuất phát và trạng thái đích.
+    \item \textbf{Đầu ra:} chuỗi các bước di chuyển để đưa trạng thái ban đầu về trạng thái đích.
+    \item \textbf{Điều kiện dừng:} khi thuật toán tìm thấy trạng thái đích.
+\end{itemize}
+
+\textbf{Khởi tạo cấu trúc dữ liệu}
+\begin{itemize}
+    \item \textbf{Open list:} chứa các trạng thái đã sinh ra nhưng chưa mở rộng.
+    \item \textbf{Closed list:} chứa các trạng thái đã được mở rộng.
+    \item Mỗi trạng thái lưu trữ thông tin $g(n)$, $h(n)$, $f(n)$ cùng con trỏ về trạng thái cha để truy vết lời giải.
+\end{itemize}
+
+\textbf{Chọn hàm heuristic}
+\begin{enumerate}
+    \item \textbf{Số ô sai vị trí (Misplaced tiles):} đơn giản, nhanh, nhưng độ chính xác thấp.
+    \item \textbf{Khoảng cách Manhattan:} tính tổng khoảng cách theo trục ngang và dọc của mỗi ô đến vị trí đích. 
+    Kết quả chính xác hơn, giúp A* tìm kiếm với ít bước hơn.
+\end{enumerate}
+
+\textbf{Tính toán hàm đánh giá}
+\[
+f(n) = g(n) + h(n)
+\]
+Trong đó:
+\begin{itemize}
+    \item $g(n)$: chi phí thực tế từ trạng thái ban đầu đến trạng thái hiện tại.
+    \item $h(n)$: chi phí ước lượng từ trạng thái hiện tại đến trạng thái đích.
+\end{itemize}
+
+\textbf{Thực hiện thuật toán A*}
+\begin{enumerate}
+    \item Khởi tạo open list với trạng thái ban đầu, closed list rỗng.
+    \item Lặp lại cho đến khi open list rỗng:
+    \begin{itemize}
+        \item Lấy trạng thái có $f(n)$ nhỏ nhất từ open list.
+        \item Nếu trạng thái hiện tại trùng với trạng thái đích $\rightarrow$ dừng thuật toán, truy vết đường đi.
+        \item Nếu chưa phải trạng thái đích: đưa trạng thái hiện tại vào closed list, sinh ra các trạng thái con.
+        \item Với mỗi trạng thái con:
+        \begin{itemize}
+            \item Tính $g(n)$, $h(n)$.
+            \item Nếu con đã trong closed list $\rightarrow$ bỏ qua.
+            \item Nếu con đã trong open list $\rightarrow$ so sánh và giữ lại trạng thái có $f(n)$ nhỏ hơn.
+            \item Nếu con chưa có trong open list và closed list $\rightarrow$ thêm vào open list.
+        \end{itemize}
+    \end{itemize}
+    \item Nếu open list rỗng mà chưa tìm thấy trạng thái đích $\rightarrow$ kết luận không tồn tại đường đi.
+\end{enumerate}
+
+\textbf{Minh họa tính toán heuristic}:
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.3\textwidth]{ảnh/Picture2.png}
+\end{figure}
+
+Giả sử có trạng thái hiện tại:
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.3\textwidth]{ảnh/Picture3.png}
+\end{figure}
+
+và Trạng thái đích:
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.3\textwidth]{ảnh/Picture4.png}
+\end{figure}.
+
+
+\begin{itemize}
+    \item \textbf{Heuristic 1 – số ô sai vị trí:} các ô sai vị trí gồm 2, 8, 1, 6, 4, 5 → tổng cộng 6 ô. Vậy h(n)=6h(n) = 6h(n)=6.
+
+
+    Đối với khoảng cách Mahattan, đây là một hàm heuristic chinh xác hơn, tinh toan tổng khoảng cách theo trục ngang và trục dọc của mỗi ô từ vị trí hiện tại đến vị trí đích của nó. Cách tinh như sau: tinh khoảng cách Mahatan cho từng ô bằng cách lấy tổng số bước di chuyển theo hàng và cột để đưa ô số từ vị trí hiện tại đến vị trí đích.
+
+    \item \textbf{Heuristic 2 – khoảng cách Manhattan:}
+\begin{itemize}
+    \item Ô 2: từ (0,0) → (0,1) = 1 bước
+    \item Ô 8: từ (0,1) → (2,1) = 2 bước
+    \item Ô 3: đúng vị trí = 0 bước
+    \item Ô 1: từ (1,0) → (0,0) = 1 bước
+    \item Ô 6: từ (1,1) → (1,2) = 1 bước
+    \item Ô 4: từ (1,2) → (1,1) = 1 bước
+    \item Ô 7: đúng vị trí = 0 bước
+    \item Ô 5: từ (2,2) → (1,2) = 1 bước
+
+    \end{itemize}
+
+    Tổng khoảng cách Manhattan: 1 + 2 + 0 + 1 + 1 + 1 + 0 + 1 = 7
+
+\end{itemize}
+
+\textbf{Kết luận}: heuristic “số ô sai vị trí” đơn giản nhưng kém chính xác. Heuristic “khoảng cách Manhattan” tuy tốn công tính toán hơn nhưng ước lượng sát hơn, giúp A* mở rộng ít trạng thái hơn và đạt được lời giải tối ưu
+
+\section{Mã nguồn}
+\subsection{Khai báo ban đầu}
+\begin{verbatim}
+import heapq
+
+# Trạng thái đích
+trangThaiDich = [[1,2,3],
+              [4,5,6],
+              [7,8,0]]
+\end{verbatim}
+\begin{itemize}
+    \item Sử dụng heapq để cài đặt hàng đợi ưu tiên (priority queue), cần thiết cho thuật toán A* (chọn trạng thái có f = g + h nhỏ nhất để mở rộng).
+    \item hàm trangThaiDich: ma trận 3x3 biểu diễn trạng thái đích.
+
+    Số 0 đại diện cho ô trống.
+
+
+    Các số từ 1 đến 8 là các ô gạch.
+
+\end{itemize}
+\subsection{Hàm tiện ích}
+\subsubsection{Tìm vị trí một số trong ma trận}
+\begin{verbatim}
+def timViTri(trangThai, giaTri):
+    for i in range(3):
+        for j in range(3):
+            if trangThai[i][j] == giaTri:
+                return (i, j)
+        return None
+
+\end{verbatim}
+\begin{itemize}
+    \item Input: trangThai (ma trận 3x3), giaTri (giá trị cần tìm).
+    \item Tìm vị trí (i, j) của một số giaTri trong ma trận trangThai.
+    \item Dùng để tìm vị trí của ô trống (0) hoặc tìm vị trí số trong trạng thái đích.
+\end{itemize}
+
+\subsubsection{Hàm heuristic: khoảng cách Manhattan}
+\begin{verbatim}
+def heuristic(trangThai):
+    h = 0
+    for i in range(3):
+        for j in range(3):
+            giaTri = trangThai[i][j]
+            if giaTri != 0:
+                dichI, dichJ = timViTri(trangThaiDich, giaTri)
+                h += abs(i - dichI) + abs(j - dichJ)
+    return h
+\end{verbatim}
+\begin{itemize}
+    \item Đây là hàm ước lượng h(x) trong A*.
+    \item Tính tổng khoảng cách Manhattan của từng ô so với vị trí đích.
+    \item Công thức: h
+    \item Bỏ qua ô trống (giaTri != 0).
+    \item Ý nghĩa: tổng số bước các ô cần di chuyển để về đúng vị trí.
+\end{itemize}
+
+\subsubsection{Chuyển trạng thái sang tuple}
+\begin{verbatim}
+    def maTranSangTuple(trangThai):
+        return tuple(tuple(hang) for hang in trangThai)
+\end{verbatim}
+\begin{itemize}
+    \item Chuyển ma trận dạng list sang tuple bất biến để lưu trong set.
+    
+    \item Tránh trùng lặp trạng thái đã duyệt.
+
+\end{itemize}
+\subsubsection{Sinh các trạng thái con( láng giềng) }
+\begin{verbatim}
+def trangThaiKe(trangThai):
+    ketQua = []
+    x, y = timVitri(trangThai, 0)  # vị trí ô trống
+    buocDi = [(-1,0,"Lên"), (1,0,"Xuống"), (0,-1,"Trái"), (0,1,"Phải")]
+    for dx, dy, huong in buocDi:
+        nx, ny = x + dx, y + dy
+        if 0 <= nx < 3 and 0 <= ny < 3:
+            moi = [hang[:] for hang in trangThai]
+            moi[x][y], moi[nx][ny] = moi[nx][ny], moi[x][y]
+            ketQua.append((moi, huong))
+    return ketQua
+\end{verbatim}
+\begin{itemize}
+    \item Tìm các nước đi hợp lệ từ trạng thái hiện tại.
+    \item Ô trống (x, y) có thể di chuyển lên, xuống, trái, phải (nếu còn trong bảng).
+    \item Sinh ra trạng thái mới sau khi đổi chỗ ô trống.
+    \item Output: danh sách (trạng thái mới, hướng di chuyển).
+
+\end{itemize}
+\subsection{Thuật toán A*}
+\begin{verbatim}
+    def aSao(trangThaiBanDau):
+        hangCho = []
+        heapq.heappush(HangCho, (heuristic(trangThaiBanDau), 0, trangThaiBanDau, []))
+        daXet = set()
+\end{verbatim}
+\begin{itemize}
+    \item hangdoi: hàng đợi ưu tiên (ưu tiên theo f = g + h).
+    \item Phần tử trong heap: (f, g, trạng thái, đường đi).
+    \item daTham: tập trạng thái đã xét.
+
+\end{itemize}
+\textbf{Vòng lặp chính}:
+\begin{verbatim}
+    while hangCho:
+        f, g, trangThai, duongDi = heapq.heappop(hangCho)
+        h = heuristic(trangThai)
+
+        # In ra giá trị g, h, f và trạng thái hiện tại
+        print("g =", g, ", h =", h, ", f =", f)
+        for hang in trangThai:
+            print(hang)
+        print("-"*20)
+\end{verbatim}
+\begin{itemize}
+    \item Lấy trạng thái tốt nhất (f nhỏ nhất) ra từ hàng đợi.
+    \item Tính lại h.
+    \item In g, h, f và trạng thái để minh họa.
+
+\end{itemize}
+\textbf{Kiểm tra trạng thái đích}:
+\begin{verbatim}
+    if trangThai == trangThaiDich:
+        print("Đã tìm thấy trạng thái đích!")
+    return duongDi
+
+    if doiSangTuple(trangThai) in DaXet:
+        continue
+    daXet.add(doiSangTuple(trangThai))
+\end{verbatim}
+\begin{itemize}
+    \item Nếu đạt trạng thái đích → dừng lại.
+ \item if doiSangTuple(trangThai) in daXet:
+ 
+ Kiểm tra xem trạng thái hiện tại đã được duyệt (có trong tập daXet) chưa.
+
+
+ Nếu có rồi thì continue (bỏ qua, không xử lý nữa).
+
+
+ Nếu chưa có thì thêm trạng thái này vào tập daXet để đánh dấu là đã duyệt, tránh lặp lại.
+
+\end{itemize}
+\textbf{Sinh trạng thái con}:
+\begin{verbatim}
+    for ke, huong in hangXom(trangThai):
+        gMoi = g + 1
+        hMoi = heuristic(ke)
+        fMoi = gMoi + hMoi
+        heapq.heappush(hangCho, (fMoi, gMoi, ke, duongDi + [(trangThai, huong)]))
+\end{verbatim}
+\begin{itemize}
+    \item Hàm hangXom(trangThai) sinh ra tất cả trạng thái con từ trạng thái hiện tại.
+    \item ke: trạng thái con (sau khi di chuyển ô trống).
+    \item huong: tên bước di chuyển (Lên, Xuống, Trái, Phải).
+    \item g = số bước đã đi từ trạng thái ban đầu đến trạng thái hiện tại.
+    \item Khi sinh thêm một bước đi → gMoi = g + 1.
+    \item Dùng heuristic Manhattan để ước lượng khoảng cách còn lại từ trạng thái con ke đến trạng thái đích.
+    \item f(n) = tổng chi phí thực tế (gMoi) + ước lượng còn lại (hMoi).
+
+\end{itemize}
+\subsection{Chạy thử và kết quả}
+\begin{verbatim}
+    trangThaiBanDau = [[1, 2, 3],
+                   [4, 5, 0],
+                   [7, 8, 6]]
+
+    loiGiai = aSao(trangThaiBanDau)
+
+    if loiGiai:
+        for i, (s, buoc) in enumerate(loiGiai):
+            print(f"Bước {i+1}: Di chuyển {buoc}")
+            for hang in s:
+            print(hang)
+            print()
+    else:
+        print("Không tìm được lời giải")
+\end{verbatim}
+\begin{itemize}
+    \item Đặt trạng thái ban đầu.
+    \item Gọi hàm A* để tìm lời giải.
+    \item Hàm trả về loiGiai là danh sách các bước (nếu tìm được), thường có dạng:
+    
+[(state0, move0), (state1, move1), ..., (stateN, "Đích")], mỗi phần tử chứa state (ma trận) và move (hướng di chuyển).
+    \item Kiểm tra xem loiGiai có giá trị hay không.
+    \item Trong Python, None hoặc [ ] (danh sách rỗng) được đánh giá là False; nếu hàm trả về danh sách không rỗng thì True.
+     \item Duyệt từng phần tử trong loiGiai bằng enumerate để có số bước i (bắt đầu từ 0) và nội dung (s, buoc):
+     
+     s là trạng thái (ma trận) tại bước đó.
+     
+     buoc là hướng di chuyển đã thực hiện để đến s.
+    \item In ra dòng thông báo:
+    Bước i: Di chuyển <hướng>.
+    \item Bên trong mỗi bước: for hang in s in từng hàng của ma trận s để hiển thị bảng 3×3 theo dạng dòng.
+    \item Nếu loiGiai là None hoặc rỗng → in thông báo rằng không có lời giải (trạng thái vô nghiệm hoặc hàm không tìm được đường đi).
+
+\end{itemize}
+
+\section{Kết luận}
+
+Bài toán 8-puzzle là một thách thức kinh điển trong lĩnh vực trí tuệ nhân tạo, đòi hỏi sự áp dụng hiệu quả của các thuật toán tìm kiếm. Trong báo cáo này, chúng em đã trình bày chi tiết về cách sử dụng thuật toán A* để giải quyết bài toán 8-puzzle, từ việc mô tả thuật toán, cài đặt đến việc đánh giá các hàm heuristic khác nhau.Thuật toán A* đã chứng minh được hiệu quả vượt trội trong việc tìm kiếm đường đi ngắn nhất từ trạng thái ban đầu đến trạng thái đích trong bài toán 8-puzzle. Điều này đạt được nhờ vào việc kết hợp chi phí thực tế từ điểm khởi đầu đến điểm hiện tại (g(n)) và chi phí ước lượng từ điểm hiện tại đến điểm đích (h(n)). Chúng em đã thử nghiệm và so sánh hai hàm heuristic phổ biến là số ô không đúng vị trí và khoảng cách Manhattan. Kết quả cho thấy, khoảng cách Manhattan tuy phức tạp hơn nhưng mang lại độ chính xác cao hơn, dẫn đến việc giảm thiểu số bước tìm kiếm cần thiết. 
+Qua quá trình nghiên cứu và thực hiện đề tài, chúng em đã rút ra được những bài học quý báu về cách áp dụng thuật toán A* trong việc giải quyết các bài toán tìm kiếm. Hơn nữa, việc hiểu rõ và lựa chọn hàm heuristic phù hợp có vai trò quan trọng trong việc tối ưu hóa quá trình tìm kiếm.
+
+ Kết quả của đề tài không chỉ dừng lại ở việc giải quyết bài toán 8-puzzle mà còn mở ra những hướng nghiên cứu và ứng dụng rộng hơn trong các lĩnh vực khác như lập kế hoạch di chuyển cho robot, phát triển các trò chơi giải.
+
+\newpage
+ \section*{Tài liệu tham khảo}
+\addcontentsline{toc}{section}{Tài liệu tham khảo}
+
+\begin{enumerate}
+
+    \item A* Search Algorithm: \url{https://www.geeksforgeeks.org/a-search-algorithm/}
+    \item Thuật toán A* algorithm: 
+    \url{https://www.youtube.com/watch?v=G7XnNtF7UEE&list=PLQj93CJe0N73raStQrnbZ9oSLtYZv8zej&index=8}
+    \item “8 Puzzle Problem in AI – GeeksforGeeks”: trang web GeeksforGeeks.
+    \item  “Heuristic Functions”: giáo trình \& bài tập của môn Heuristic Search / Artificial Intelligence, 
+    ví dụ như cs.utexas.edu và các trường đại học khác.
+    
+\end{enumerate}
+
+ 
+
+\end{document}
