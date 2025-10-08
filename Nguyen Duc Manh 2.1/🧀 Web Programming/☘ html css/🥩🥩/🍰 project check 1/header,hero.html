@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>project check</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        
+         :root {
+            --font-heading: "Sen", sans-serif;
+            --primary-color: #ffb900;
+        }
+        
+        html {
+            font-size: 62.5%;
+        }
+        /* khôi phục lại cỡ chữ mặc định theo rem */
+        
+        body {
+            font-size: 1.6rem;
+            font-family: "Poppins", sans-serif;
+        }
+        /* =================common================== */
+        
+        a {
+            text-decoration: none;
+        }
+        
+        .heading-lv2 {
+            color: #171100;
+            font-family: var(--font-heading);
+            font-size: 3.8rem;
+            font-weight: 700;
+            line-height: 1.27;
+            letter-spacing: -0.76px;
+        }
+        
+        .btn {
+            display: inline-block;
+            min-width: 118px;
+            padding: 0 16px;
+            line-height: 50px;
+            color: #fff;
+            text-align: center;
+            font-size: 1.6rem;
+            font-weight: 600;
+            border-radius: 999px;
+            background: #171100;
+        }
+        
+        .btn:hover {
+            cursor: pointer;
+            opacity: 0.9;
+        }
+        
+        .main-content {
+            width: 1170px;
+            max-width: calc(100% - 48px);
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .line-clamp {
+            display: -webkit-box;
+            -webkit-line-clamp: var(--line-clamp, 1);
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
+        .line-clamp.line-2 {
+            --line-clamp: 2;
+        }
+        
+        .break-all {
+            word-break: break-all;
+        }
+        /* =================header================== */
+        
+        .header {
+            background: #fffcf4;
+        }
+        
+        .header.fixed {
+            z-index: 1;
+            position: sticky;
+            top: -28px;
+        }
+        
+        .header .body {
+            display: flex;
+            align-items: center;
+            padding: 36px 0 8px;
+        }
+        
+        .nav {
+            margin-left: auto;
+        }
+        
+        .nav ul {
+            display: flex;
+            list-style-type: none;
+            /* Xóa dấu chấm */
+            padding: 0;
+            /* Xóa khoảng cách bên trái */
+        }
+        
+        .nav a {
+            position: relative;
+            color: #5f5b53;
+            font-size: 1.6rem;
+            padding: 8px 21px;
+        }
+        
+        .nav li.active a,
+        .nav a:hover {
+            color: #171100;
+            /* font-weight: 600; */
+            text-shadow: 1px 0 0 currentColor;
+        }
+        
+        .nav li.active a::after {
+            position: absolute;
+            left: 21px;
+            bottom: 6px;
+            display: block;
+            content: "";
+            width: 12px;
+            height: 2px;
+            border-radius: 1px;
+            background: #171100;
+        }
+        
+        .header .btn-sign-up {
+            min-width: 144px;
+        }
+        
+        .header .action {
+            margin-left: 49px;
+        }
+        /* ================hero================== */
+        
+        .hero {
+            padding: 56px 0 65px;
+            background: #fffcf4;
+        }
+        
+        .hero .body {
+            display: flex;
+        }
+        /* ========= hero left ============== */
+        
+        .hero .media-block {
+            position: relative;
+            width: 48%;
+        }
+        
+        .hero .media-block .img {
+            width: 470px;
+            height: 685px;
+            object-fit: cover;
+            border-radius: 20px;
+        }
+        
+        .hero .hero-summary {
+            padding: 24px;
+            width: 270px;
+            position: absolute;
+            bottom: 48px;
+            right: 0;
+            border-radius: 12px;
+            background: #fff;
+            box-shadow: 0px 16px 32px 0px rgba(0, 0, 0, 0.05);
+        }
+        
+        .hero-summary .item {
+            display: flex;
+            align-items: center;
+        }
+        
+        .hero-summary .item+.item {
+            margin-top: 22px;
+        }
+        
+        .hero-summary .icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #fff9e8;
+        }
+        
+        .hero-summary .icon2 {
+            background-color: #fcefff;
+        }
+        
+        .hero-summary .icon3 {
+            background-color: #ebeaff;
+        }
+        
+        .hero-summary .info {
+            margin-left: 16px;
+        }
+        
+        .hero-summary .label {
+            color: #5f5b53;
+            font-size: 1.4rem;
+            line-height: 1.86;
+            /* 185.714% */
+        }
+        
+        .hero-summary .title {
+            color: #171100;
+            font-size: 1.8rem;
+            font-weight: 600;
+            line-height: 1.67;
+            /* 166.667% */
+        }
+        /* =========== hero right======== */
+        
+        .hero .content-block {
+            width: 52%;
+            padding-left: 130px;
+            padding-top: 64px;
+        }
+        
+        .hero .heading {
+            color: #171100;
+            font-family: var(--font-heading);
+            font-size: 5.8rem;
+            font-weight: 700;
+            line-height: 1.17;
+            letter-spacing: -1.16px;
+        }
+        
+        .hero .desc {
+            margin-top: 22px;
+            color: #5f5b53;
+            font-size: 1.8rem;
+            line-height: 1.67;
+        }
+        
+        .hero .cta-group {
+            display: flex;
+            align-items: center;
+            margin-top: 38px;
+        }
+        
+        .hero-cta {
+            min-width: 180px;
+            line-height: 64px;
+            background-color: var(--primary-color);
+        }
+        
+        .hero .watch-video {
+            margin-left: 28px;
+            border: none;
+            background: transparent;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+        
+        .hero .watch-video .icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 40px;
+            background: #fff;
+            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.07);
+        }
+        
+        .hero .watch-video span {
+            margin-left: 14px;
+            color: #171100;
+            font-size: 1.8rem;
+            font-weight: 600;
+            line-height: 1.67;
+        }
+        
+        .hero .desc-recent {
+            margin-top: 48px;
+        }
+        
+        .hero .stats {
+            margin-top: 8px;
+        }
+        
+        .hero .stats strong {
+            margin-right: 15px;
+            color: #171100;
+            font-family: var(--font-heading);
+            font-size: 4.4rem;
+            font-weight: 700;
+            line-height: 1.23;
+        }
+        
+        .hero .stats strong:nth-child(2) {
+            margin-left: 28px;
+        }
+    </style>
+</head>
+<!-- 1 hộp bánh chocopie-->
+
+<body>
+    <!-- gói bánh mẫu giới thiệu ngoài header  -->
+    <header class="header fixed">
+        <!-- vỏ nhựa đựng bánh -->
+        <div class="main-content">
+            <!-- các bánh -->
+            <div class="body">
+                <!-- bánh 1 logo -->
+                <img src="./assets/img/logo.svg" alt="Lesson." class="logo">
+                <!-- bánh 2 nav -->
+                <nav class="nav">
+                    <ul>
+                        <li class="active">
+                            <a href="#!">Home</a>
+                        </li>
+                        <li>
+                            <a href="#!">Courses</a>
+                        </li>
+                        <li>
+                            <a href="#!">Pricing</a>
+                        </li>
+                        <li>
+                            <a href="#!">Reviews</a>
+                        </li>
+                    </ul>
+                </nav>
+                <!-- bánh 3 action -->
+                <div class="action">
+                    <a href="#!" class="btn btn-sign-up">Sign Up</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- bánh bên trong  main -->
+    <main>
+        <!-- gói bánh đầu tiên hero -->
+        <div class="hero">
+            <!-- vỏ nhựa đựng bánh -->
+            <div class="main-content">
+                <!-- các bánh -->
+                <div class="body">
+
+                    <!-- bánh 1 hero left -->
+                    <div class="media-block">
+                        <!-- miếng bánh 1 img -->
+                        <img src="./assets/img/hero-img.jpg" class="img">
+                        <!-- miếng bánh 2 thẻ -->
+                        <div class="hero-summary">
+                            <!-- tầng 1 miếng bánh 2 item1 -->
+                            <div class="item">
+                                <!-- phần bánh icon -->
+                                <div class="icon">
+                                    <img src="./assets/icon/des.svg" alt="">
+                                </div>
+                                <!-- phần kem info -->
+                                <div class="info">
+                                    <p class="label">20 Courses</p>
+                                    <p class="title">UI/UX Design</p>
+                                </div>
+                            </div>
+                            <!-- tầng 2 miếng bánh 2 item2 -->
+                            <div class="item">
+                                <!-- phần bánh icon -->
+                                <div class="icon icon2">
+                                    <img src="./assets/icon/dev.svg" alt="">
+                                </div>
+                                <!-- phần kem info -->
+                                <div class="info">
+                                    <p class="label">20 Courses</p>
+                                    <p class="title">Development</p>
+                                </div>
+                            </div>
+                            <!-- tầng 3 miếng bánh 2 item3 -->
+                            <div class="item">
+                                <!-- phần bánh icon -->
+                                <div class="icon icon3">
+                                    <img src="./assets/icon/marketing.svg" alt="">
+                                </div>
+                                <!-- phần kem info -->
+                                <div class="info">
+                                    <p class="label">30 Courses</p>
+                                    <p class="title">Marketing</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- bánh 2 hero right -->
+                    <div class="content-block">
+                        <h1 class="heading">Learn without limits and spread knowledge.</h1>
+                        <p class="desc">
+                            Build new skills for that “this is my year” feeling with courses, certificates, and degrees from world-class universities and companies.
+                        </p>
+
+                        <div class="cta-group">
+                            <a href="#!" class="btn hero-cta">See Courses</a>
+                            <button class="watch-video">
+                                <div class="icon">
+                                    <img src="./assets/icon/play.svg" alt="">
+                                </div>
+                                <span>Watch Video</span>
+                            </button>
+                        </div>
+
+                        <p class="desc desc-recent">Recent engagement</p>
+                        <p class="desc stats">
+                            <strong>50K</strong> Students
+                            <strong>70+</strong> Courses
+                        </p>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </main>
+</body>

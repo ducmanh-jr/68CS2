@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>project check</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            /* Thiết lập box-sizing cho tất cả phần tử, đảm bảo padding và border được tính trong kích thước tổng của phần tử */
+        }
+        
+         :root {
+            --font-heading: "Sen", sans-serif;
+            /* Định nghĩa biến font cho tiêu đề */
+            --primary-color: #ffb900;
+            /* Định nghĩa biến màu chủ đạo */
+        }
+        
+        html {
+            font-size: 62.5%;
+            /* Thiết lập kích thước font mặc định cho html để dễ dàng tính toán rem (1rem = 10px) */
+        }
+        
+        body {
+            font-size: 1.6rem;
+            /* Thiết lập kích thước font của body (1.6rem = 16px) */
+            font-family: "Poppins", sans-serif;
+            /* Chọn font chữ cho body */
+        }
+        
+        a {
+            text-decoration: none;
+            /* Loại bỏ gạch chân mặc định của liên kết */
+        }
+        
+        .heading-lv2 {
+            color: #171100;
+            /* Màu chữ của tiêu đề cấp 2 */
+            font-family: var(--font-heading);
+            /* Sử dụng font đã định nghĩa ở :root */
+            font-size: 3.8rem;
+            /* Kích thước chữ tiêu đề cấp 2 */
+            font-weight: 700;
+            /* Đặt độ đậm của chữ */
+            line-height: 1.27;
+            /* Chiều cao dòng */
+            letter-spacing: -0.76px;
+            /* Khoảng cách giữa các chữ */
+        }
+        
+        .btn {
+            display: inline-block;
+            /* Hiển thị nút dưới dạng block-inline */
+            min-width: 118px;
+            /* Chiều rộng tối thiểu của nút */
+            padding: 0 16px;
+            /* Padding trái và phải của nút */
+            line-height: 50px;
+            /* Chiều cao dòng của nút */
+            color: #fff;
+            /* Màu chữ của nút */
+            text-align: center;
+            /* Căn giữa nội dung trong nút */
+            font-size: 1.6rem;
+            /* Kích thước chữ trong nút */
+            font-weight: 600;
+            /* Độ đậm chữ trong nút */
+            border-radius: 999px;
+            /* Bo tròn góc của nút */
+            background: #171100;
+            /* Màu nền của nút */
+        }
+        
+        .btn:hover {
+            cursor: pointer;
+            /* Hiển thị con trỏ chuột dạng pointer khi hover */
+            opacity: 0.9;
+            /* Làm mờ nút khi hover */
+        }
+        
+        .main-content {
+            width: 1170px;
+            /* Chiều rộng cố định của phần nội dung chính */
+            max-width: calc(100% - 48px);
+            /* Chiều rộng tối đa của phần nội dung chính */
+            margin-left: auto;
+            /* Canh lề trái */
+            margin-right: auto;
+            /* Canh lề phải */
+        }
+        
+        .line-clamp {
+            display: -webkit-box;
+            /* Dùng để tạo hiệu ứng giới hạn dòng văn bản */
+            -webkit-line-clamp: var(--line-clamp, 1);
+            /* Số dòng tối đa, mặc định là 1 */
+            -webkit-box-orient: vertical;
+            /* Định hướng box theo chiều dọc */
+            overflow: hidden;
+            /* Ẩn phần văn bản vượt quá dòng giới hạn */
+        }
+        
+        .line-clamp.line-2 {
+            --line-clamp: 2;
+            /* Thiết lập số dòng là 2 khi class line-2 được thêm vào */
+        }
+        
+        .break-all {
+            word-break: break-all;
+            /* Chia từ khi cần thiết để tránh văn bản bị tràn */
+        }
+        
+        .header {
+            background: #fffcf4;
+            /* Màu nền của header */
+        }
+        
+        .header.fixed {
+            z-index: 1;
+            /* Đảm bảo header luôn ở trên các phần tử khác */
+            position: sticky;
+            /* Làm cho header cố định khi cuộn trang */
+            top: -28px;
+            /* Điều chỉnh vị trí cố định của header */
+        }
+        
+        .header .body {
+            display: flex;
+            /* Sử dụng flexbox để căn chỉnh các phần tử con */
+            align-items: center;
+            /* Căn giữa theo chiều dọc */
+            padding: 36px 0 8px;
+            /* Padding cho body của header */
+        }
+        
+        .nav {
+            margin-left: auto;
+            /* Canh phải menu navigation */
+        }
+        
+        .nav ul {
+            display: flex;
+            /* Hiển thị các mục menu dưới dạng flex */
+            list-style-type: none;
+            /* Loại bỏ dấu chấm đầu dòng */
+            padding: 0;
+            /* Xóa padding mặc định */
+        }
+        
+        .nav a {
+            position: relative;
+            /* Đặt liên kết ở vị trí tương đối */
+            color: #5f5b53;
+            /* Màu chữ của các liên kết */
+            font-size: 1.6rem;
+            /* Kích thước chữ của liên kết */
+            padding: 8px 21px;
+            /* Padding cho liên kết */
+        }
+        
+        .nav li.active a,
+        .nav a:hover {
+            color: #171100;
+            /* Màu chữ khi liên kết được chọn hoặc hover */
+            text-shadow: 1px 0 0 currentColor;
+            /* Tạo bóng chữ khi hover */
+        }
+        
+        .nav li.active a::after {
+            position: absolute;
+            /* Vị trí tuyệt đối cho phần tử giả sau liên kết */
+            left: 21px;
+            bottom: 6px;
+            display: block;
+            content: "";
+            width: 12px;
+            height: 2px;
+            border-radius: 1px;
+            background: #171100;
+            /* Đường gạch dưới hiển thị khi item menu được chọn */
+        }
+        
+        .header .btn-sign-up {
+            min-width: 144px;
+            /* Đặt chiều rộng tối thiểu cho nút đăng ký */
+        }
+        
+        .header .action {
+            margin-left: 49px;
+            /* Khoảng cách giữa các phần tử trong hành động */
+        }
+        
+        .hero {
+            padding: 56px 0 65px;
+            /* Padding cho hero section */
+            background: #fffcf4;
+            /* Màu nền của hero */
+        }
+        
+        .hero .body {
+            display: flex;
+            /* Dùng flexbox để bố trí các phần tử con */
+        }
+        
+        .hero .media-block {
+            position: relative;
+            /* Vị trí của phần media */
+            width: 48%;
+            /* Chiều rộng phần media */
+        }
+        
+        .hero .media-block .img {
+            width: 470px;
+            /* Chiều rộng của hình ảnh */
+            height: 685px;
+            /* Chiều cao của hình ảnh */
+            object-fit: cover;
+            /* Đảm bảo hình ảnh phủ đầy vùng chứa */
+            border-radius: 20px;
+            /* Bo tròn góc hình ảnh */
+        }
+        
+        .hero .hero-summary {
+            padding: 24px;
+            /* Padding cho phần tóm tắt hero */
+            width: 270px;
+            /* Chiều rộng của phần tóm tắt */
+            position: absolute;
+            /* Đặt phần tóm tắt ở vị trí tuyệt đối */
+            bottom: 48px;
+            /* Khoảng cách từ dưới */
+            right: 0;
+            /* Căn phải */
+            border-radius: 12px;
+            /* Bo tròn góc của phần tóm tắt */
+            background: #fff;
+            /* Màu nền của phần tóm tắt */
+            box-shadow: 0px 16px 32px 0px rgba(0, 0, 0, 0.05);
+            /* Đổ bóng cho phần tóm tắt */
+        }
+        
+        .hero-summary .item {
+            display: flex;
+            /* Dùng flexbox để căn chỉnh các item bên trong */
+            align-items: center;
+            /* Căn giữa các item theo chiều dọc */
+        }
+        
+        .hero-summary .item+.item {
+            margin-top: 22px;
+            /* Khoảng cách giữa các item */
+        }
+        
+        .hero-summary .icon {
+            width: 48px;
+            /* Chiều rộng của icon */
+            height: 48px;
+            /* Chiều cao của icon */
+            border-radius: 50%;
+            /* Làm tròn icon */
+            display: flex;
+            /* Dùng flexbox để căn giữa nội dung trong icon */
+            justify-content: center;
+            align-items: center;
+            background-color: #fff9e8;
+            /* Màu nền của icon */
+        }
+        
+        .hero-summary .icon2 {
+            background-color: #fcefff;
+            /* Màu nền khác cho icon2 */
+        }
+        
+        .hero-summary .icon3 {
+            background-color: #ebeaff;
+            /* Màu nền khác cho icon3 */
+        }
+        
+        .hero-summary .info {
+            margin-left: 16px;
+            /* Khoảng cách bên trái cho thông tin */
+        }
+        
+        .hero-summary .label {
+            color: #5f5b53;
+            /* Màu chữ cho label */
+            font-size: 1.4rem;
+            /* Kích thước chữ cho label */
+            line-height: 1.86;
+            /* Chiều cao dòng của label */
+        }
+        
+        .hero-summary .title {
+            color: #171100;
+            /* Màu chữ cho tiêu đề */
+            font-size: 1.8rem;
+            /* Kích thước chữ cho tiêu đề */
+            font-weight: 600;
+            /* Độ đậm chữ cho tiêu đề */
+            line-height: 1.67;
+            /* Chiều cao dòng cho tiêu đề */
+        }
+        
+        .hero .content-block {
+            width: 52%;
+            /* Chiều rộng của phần nội dung */
+            padding-left: 130px;
+            /* Padding bên trái */
+            padding-top: 64px;
+            /* Padding bên trên */
+        }
+        
+        .hero .heading {
+            color: #171100;
+            /* Màu chữ của tiêu đề hero */
+            font-family: var(--font-heading);
+            /* Sử dụng font đã định nghĩa */
+            font-size: 5.8rem;
+            /* Kích thước chữ của tiêu đề */
+            font-weight: 700;
+            /* Độ đậm của chữ */
+            line-height: 1.17;
+            /* Chiều cao dòng */
+            letter-spacing: -1.16px;
+            /* Khoảng cách giữa các chữ */
+        }
+        
+        .hero .desc {
+            margin-top: 22px;
+            /* Khoảng cách giữa tiêu đề và mô tả */
+            color: #5f5b53;
+            /* Màu chữ cho mô tả */
+            font-size: 1.8rem;
+            /* Kích thước chữ cho mô tả */
+            line-height: 1.67;
+            /* Chiều cao dòng của mô tả */
+        }
+        
+        .hero .cta-group {
+            display: flex;
+            /* Dùng flexbox cho các nút call-to-action */
+            align-items: center;
+            /* Căn giữa các nút */
+            margin-top: 38px;
+            /* Khoảng cách giữa mô tả và nhóm CTA */
+        }
+        
+        .hero-cta {
+            min-width: 180px;
+            /* Chiều rộng tối thiểu cho nút CTA */
+            line-height: 64px;
+            /* Chiều cao của nút CTA */
+            background-color: var(--primary-color);
+            /* Màu nền của nút CTA */
+        }
+        
+        .hero .watch-video {
+            margin-left: 28px;
+            /* Khoảng cách bên trái cho nút video */
+            border: none;
+            /* Loại bỏ đường viền */
+            background: transparent;
+            /* Màu nền trong suốt */
+            display: flex;
+            /* Dùng flexbox để căn giữa */
+            align-items: center;
+            /* Căn giữa các phần tử trong nút */
+            cursor: pointer;
+            /* Hiển thị con trỏ dạng pointer khi hover */
+        }
+        
+        .hero .watch-video .icon {
+            display: flex;
+            /* Dùng flexbox cho icon */
+            align-items: center;
+            /* Căn giữa icon */
+            justify-content: center;
+            /* Căn giữa icon */
+            width: 40px;
+            /* Kích thước icon */
+            height: 40px;
+            /* Kích thước icon */
+            border-radius: 40px;
+            /* Làm tròn icon */
+            background: #fff;
+            /* Màu nền icon */
+            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.07);
+            /* Đổ bóng cho icon */
+        }
+        
+        .hero .watch-video span {
+            margin-left: 14px;
+            /* Khoảng cách giữa icon và văn bản */
+            color: #171100;
+            /* Màu chữ cho span */
+            font-size: 1.8rem;
+            /* Kích thước chữ cho span */
+            font-weight: 600;
+            /* Độ đậm chữ */
+            line-height: 1.67;
+            /* Chiều cao dòng cho span */
+        }
+        
+        .hero .desc-recent {
+            margin-top: 48px;
+            /* Khoảng cách từ mô tả gần đây */
+        }
+        
+        .hero .stats {
+            margin-top: 8px;
+            /* Khoảng cách giữa stats và các phần tử khác */
+        }
+        
+        .hero .stats strong {
+            margin-right: 15px;
+            /* Khoảng cách bên phải của số liệu thống kê */
+            color: #171100;
+            /* Màu chữ cho strong */
+            font-family: var(--font-heading);
+            /* Font cho strong */
+            font-size: 4.4rem;
+            /* Kích thước chữ cho strong */
+            font-weight: 700;
+            /* Độ đậm chữ cho strong */
+            line-height: 1.23;
+            /* Chiều cao dòng cho strong */
+        }
+        
+        .hero .stats strong:nth-child(2) {
+            margin-left: 28px;
+            /* Khoảng cách bên trái cho strong thứ 2 */
+        }
+    </style>
+
+</head>
+<!-- 1 hộp bánh chocopie-->
+
+<body>
+    <!-- gói bánh mẫu giới thiệu ngoài header  -->
+    <header class="header fixed">
+        <!-- vỏ nhựa đựng bánh -->
+        <div class="main-content">
+            <!-- các bánh -->
+            <div class="body">
+                <!-- bánh 1 logo -->
+                <img src="./assets/img/logo.svg" alt="Lesson." class="logo">
+                <!-- bánh 2 nav -->
+                <nav class="nav">
+                    <ul>
+                        <li class="active">
+                            <a href="#!">Home</a>
+                        </li>
+                        <li>
+                            <a href="#!">Courses</a>
+                        </li>
+                        <li>
+                            <a href="#!">Pricing</a>
+                        </li>
+                        <li>
+                            <a href="#!">Reviews</a>
+                        </li>
+                    </ul>
+                </nav>
+                <!-- bánh 3 action -->
+                <div class="action">
+                    <a href="#!" class="btn btn-sign-up">Sign Up</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- bánh bên trong  main -->
+    <main>
+        <!-- gói bánh đầu tiên hero -->
+        <div class="hero">
+            <!-- vỏ nhựa đựng bánh -->
+            <div class="main-content">
+                <!-- các bánh -->
+                <div class="body">
+
+                    <!-- bánh 1 hero left -->
+                    <div class="media-block">
+                        <!-- miếng bánh 1 img -->
+                        <img src="./assets/img/hero-img.jpg" class="img">
+                        <!-- miếng bánh 2 thẻ -->
+                        <div class="hero-summary">
+                            <!-- tầng 1 miếng bánh 2 item1 -->
+                            <div class="item">
+                                <!-- phần bánh icon -->
+                                <div class="icon">
+                                    <img src="./assets/icon/des.svg" alt="">
+                                </div>
+                                <!-- phần kem info -->
+                                <div class="info">
+                                    <p class="label">20 Courses</p>
+                                    <p class="title">UI/UX Design</p>
+                                </div>
+                            </div>
+                            <!-- tầng 2 miếng bánh 2 item2 -->
+                            <div class="item">
+                                <!-- phần bánh icon -->
+                                <div class="icon icon2">
+                                    <img src="./assets/icon/dev.svg" alt="">
+                                </div>
+                                <!-- phần kem info -->
+                                <div class="info">
+                                    <p class="label">20 Courses</p>
+                                    <p class="title">Development</p>
+                                </div>
+                            </div>
+                            <!-- tầng 3 miếng bánh 2 item3 -->
+                            <div class="item">
+                                <!-- phần bánh icon -->
+                                <div class="icon icon3">
+                                    <img src="./assets/icon/marketing.svg" alt="">
+                                </div>
+                                <!-- phần kem info -->
+                                <div class="info">
+                                    <p class="label">30 Courses</p>
+                                    <p class="title">Marketing</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- bánh 2 hero right -->
+                    <div class="content-block">
+                        <h1 class="heading">Learn without limits and spread knowledge.</h1>
+                        <p class="desc">
+                            Build new skills for that “this is my year” feeling with courses, certificates, and degrees from world-class universities and companies.
+                        </p>
+
+                        <div class="cta-group">
+                            <a href="#!" class="btn hero-cta">See Courses</a>
+                            <button class="watch-video">
+                                <div class="icon">
+                                    <img src="./assets/icon/play.svg" alt="">
+                                </div>
+                                <span>Watch Video</span>
+                            </button>
+                        </div>
+
+                        <p class="desc desc-recent">Recent engagement</p>
+                        <p class="desc stats">
+                            <strong>50K</strong> Students
+                            <strong>70+</strong> Courses
+                        </p>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
