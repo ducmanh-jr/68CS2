@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+    <pre>
+        <h1 style="background-color:rgb(182, 182, 218);" >Lớp lưới</h1>
+            <p> Hệ thống lưới Bootstrap có bốn lớp:
+        xs(dành cho điện thoại - màn hình có chiều rộng dưới 768px)
+        sm(đối với máy tính bảng - màn hình rộng bằng hoặc lớn hơn 768px)
+        md(dành cho máy tính xách tay nhỏ - màn hình rộng bằng hoặc lớn hơn 992px)
+        lg(dành cho máy tính xách tay và máy tính để bàn - màn hình rộng bằng hoặc lớn hơn 1200px)
+        </p>
+    </pre>
+    <div class="col">
+        <div class="col-xs-5" style="background-color:lavender;">.col-sm-1</div>
+        <div class="col-xs-4" style="background-color:lavenderblush;">.col-sm-2</div>
+        <div class="col-xs-3" style="background-color:lavender;">.col-sm-3</div>
+    </div>
+    <br>
+    <pre>
+        class="col" là lưới     
+        sm phân bố khi không đủ kích thước     
+        4 là kích cỡ
+
+
+
+
+
+
+    </pre>
+
+    <pre> 
+    <h1 style="background-color:rgb(164, 164, 223);" > kiểu chữ </h1>
+  
+        <p>h1 heading <small>secondary text</small><mark>highlight</mark></h1>
+        <p>The <abbr title="World Health Organization">WHO</abbr> was founded in 1948.</p>
+        <blockquote>
+            <p>For 50 years, </p><footer>From WWF's website</footer>
+        </blockquote>
+        <blockquote class="blockquote-reverse">
+            <p>For 50 years</p>
+            <footer>From WWF's website</footer>
+        </blockquote>
+        <p>
+            "small" tạo văn bản nhẹ hơn trong bất kỳ tiêu đề nào
+            "lead" nổi bật đoạn văn 
+            "mark" đánh dấu hightlight
+            "abbr" viết tắt 
+            abbr title="World Health Organization" 
+            class="initialism">WHO/abbr
+            "blockquete" trích dẫn 
+            "footer" bằng với small
+            "blockquote class="blockquote-reverse">/blockquote" 
+                class dùng để trích dẫn bên trái 
+        </p>
+    </pre>
+
+
+
+
+
+
+
+
+
+
+    <div class="container">
+        <h3>Description Lists</h3>
+        <p>The dl element indicates a description list:</p>
+        <dl>
+            <dt>Coffee</dt>
+            <dd>- black <kbd> hot </kbd> drink</dd>
+            <dt>Milk</dt>
+            <dd>- white <code>cold</code> drink</dd>
+        </dl>
+    </div>
+    <p class="text-muted">This text is muted.</p>
+    <p class="text-primary">This text is important.</p>
+    <p class="text-success">This text indicates success.</p>
+    <p class="text-info">This text represents some information.</p>
+    <p class="text-warning">This text represents a warning.</p>
+    <p class="text-danger">This text represents danger.</p>
+    <p class="bg-primary">This text is important.</p>
+    <p class="bg-success">This text indicates success.</p>
+    <p class="bg-info">This text represents some information.</p>
+    <p class="bg-warning">This text represents a warning.</p>
+    <p class="bg-danger">This text represents danger.</p>
+    <pre>
+            "dl" Phần tử dl biểu thị danh sách mô tả
+            "dt" in đậm
+            "code" in đỏ 
+            "hot" bôi đen 
+            class 
+            text-muted chữ màu xám 
+            text-private chữ màu xanh da trời 
+            text-success lá cây
+            text-info xanh da trời nhạt 
+            text-warning vàng 
+            text-danger hồng
+            bg-primary tương tự như trên nhưng là màu nền 
+            text-left văn bản bên trái 
+            (tg tự vs right , center )
+            text-justify căn đều văn bản
+            text-nowrap cho bt văn bản không ngắt dòng 
+            text-lowercase viết thường
+            text-uppercase viết hoa hết 
+            text-capitilize viết hoa chữ đầu
+        </pre>
+    <ul class="list-unstyled">
+        <li>Coffee</li>
+        <li>Tea
+            <ul>
+                <li>Black tea</li>
+                <li>Green tea</li>
+            </ul>
+        </li>
+        <li>Milk</li>
+    </ul>
+    <ul class="list-inline">
+        <li>Coffee</li>
+        <li>Tea</li>
+        <li>Milk</li>
+    </ul>
+    <dl class="dl-horizontal">
+        <dt>Coffee</dt>
+        <dd>- black hot drink</dd>
+        <dt>Milk</dt>
+        <dd>- white cold drink</dd>
+    </dl>
+    <pre class="pre-scrollable">Text in a pre element
+                is displayed in a fixed-width
+                font, and it preserves
+                both      spaces and
+                line breaks.</pre>
+    <pre>
+            class 
+            list-unstyled bảng 
+            list-inline đặt tất cả trên 1 dòng 
+            dl-horizontal bảng  
+            pre-scrollable có thể cuộn được 
+        </pre>
+</body>
+
+</html>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>JavaScript</title>
+    <script>
+        function myFunction() {
+            document.getElementById("demo1").innerHTML = " mot ngay khong nang ";
+
+        }
+    </script>
+</head>
+
+<body>
+    <h2> nam trong body </h2>
+    <p id="demo"> hom nay cua ban the nao </p>
+    <button type="button" onclick='document.getElementById("demo").innerHTML="the gioi mot minh "'> click me </button>
+    <script>
+        document.getElementById("demo").innerHTML = " mot ngay khong nang ";
+    </script>
+
+    <h2>nam ngoai file</h2>
+    <p id="demo1"> hom nay cua ban the nao </p>
+    <button type="button" onclick=' myFunction() '>Click me</button>
+    <script src="bai1.js"></script>
+</body>
+
+</html>

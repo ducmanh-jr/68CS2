@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> outPut</title>
+</head>
+
+<body>
+    <p id="demo"></p>
+    <button type="button" onclick="document.write(1+1)">try it</button><br>
+    <script>
+        let a, b, c;
+        a = 5;
+        b = 6;
+        c = a + b;
+        document.getElementById("demo").innerHTML = 1 + 2;
+        document.write(1 + 3);
+    </script>
+    <script>
+        window.alert(4);
+        /* cửa sổ cảnh báo trả về */
+        alert(5);
+    </script>
+
+    <br><button onclick="window.print()">in file </button>
+    <pre>
+        Khi nào sử dụng var, let hoặc const?
+1. Luôn khai báo biến
+
+2. Luôn sử dụng constnếu giá trị không nên thay đổi
+
+3. Luôn sử dụng constnếu kiểu không nên thay đổi (Mảng và Đối tượng)
+
+4. Chỉ sử dụng letnếu bạn không thể sử dụngconst
+
+5. Chỉ sử dụng varnếu bạn PHẢI hỗ trợ trình duyệt cũ
+
+Điều tốt là gì?
+letvà const có phạm vi khối .
+
+letvà const không thể khai báo lại .
+
+letvà const phải khai báo trước khi sử dụng.
+
+letvà const không ràng buộc với this.
+
+letvà không const được nâng lên .
+
+Điều gì là không tốt?
+varkhông cần phải khai báo.
+
+varđược nâng lên.
+
+varliên kết với điều này.
+    </pre>
+</body>
+
+</html>

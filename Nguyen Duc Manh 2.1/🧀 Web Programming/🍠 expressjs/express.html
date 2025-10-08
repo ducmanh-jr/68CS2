@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tổng hợp lý thuyết về Express.js</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        
+        header {
+            background-color: #333;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+        }
+        
+        section {
+            padding: 20px;
+            margin: 10px auto;
+            max-width: 1000px;
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1,
+        h2 {
+            color: #333;
+        }
+        
+        pre {
+            background-color: #f4f4f4;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 1rem;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        
+        code {
+            font-family: monospace;
+            background-color: #f4f4f4;
+            padding: 5px;
+            border-radius: 3px;
+        }
+        
+        ul {
+            list-style-type: disc;
+            margin-left: 20px;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 10px;
+            background-color: #333;
+            color: white;
+            position: absolute;
+            width: 100%;
+            bottom: 0;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>Tổng hợp lý thuyết về Express.js</h1>
+    </header>
+
+    <section>
+        <h2>1. Express.js là gì?</h2>
+        <p>Express.js là một framework <strong>Node.js</strong> phổ biến được sử dụng để xây dựng các ứng dụng web và API. Nó giúp đơn giản hóa việc xử lý các yêu cầu HTTP, quản lý các tuyến (routes), và cung cấp các tính năng mạnh mẽ khác như middleware,
+            templates, và quản lý lỗi.</p>
+
+        <p>Express hỗ trợ việc xây dựng các ứng dụng đơn giản và phức tạp với các tuyến động, quản lý middleware, các phương thức HTTP như <code>GET</code>, <code>POST</code>, <code>PUT</code>, <code>DELETE</code>, v.v. Express không đi kèm với các tính
+            năng giao diện người dùng như một số framework khác, nhưng nó rất linh hoạt và có thể mở rộng với các thư viện và module bên ngoài.</p>
+    </section>
+
+
+
+    <section>
+        <h2>3. Cấu trúc cơ bản của một ứng dụng Express</h2>
+        <p>Một ứng dụng Express cơ bản bao gồm những bước sau:</p>
+        <ol>
+            <li><strong>Tạo một ứng dụng Express</strong>: Khởi tạo một ứng dụng Express bằng cách sử dụng <code>express()</code> để tạo một đối tượng ứng dụng.</li>
+            <li><strong>Xác định các tuyến (routes)</strong>: Mỗi tuyến có thể xử lý các yêu cầu HTTP (GET, POST, PUT, DELETE, v.v.).</li>
+            <li><strong>Lắng nghe các yêu cầu</strong>: Đặt máy chủ để lắng nghe các yêu cầu trên một cổng cụ thể.</li>
+        </ol>
+
+        <h3>Ví dụ:</h3>
+        <pre><code>
+const express = require('express');
+const app = express();
+
+// Định nghĩa một tuyến
+app.get('/', (req, res) => {
+  res.send('Hello, Express!');
+});
+
+// Lắng nghe cổng
+app.listen(3000, () => {
+  console.log('Server is running on port 3000');
+});
+    </code></pre>
+    </section>
+
+    <section>
+        <h2>4. Các phương thức HTTP trong Express</h2>
+        <p>Express hỗ trợ tất cả các phương thức HTTP cơ bản:</p>
+        <ul>
+            <li><code>app.get(path, callback)</code>: Xử lý yêu cầu GET.</li>
+            <li><code>app.post(path, callback)</code>: Xử lý yêu cầu POST.</li>
+            <li><code>app.put(path, callback)</code>: Xử lý yêu cầu PUT.</li>
+            <li><code>app.delete(path, callback)</code>: Xử lý yêu cầu DELETE.</li>
+            <li><code>app.all(path, callback)</code>: Xử lý tất cả các phương thức HTTP trên cùng một tuyến.</li>
+            <li><code>app.head(path, callback)</code>: Xử lý yêu cầu HEAD.</li>
+            <li><code>app.options(path, callback)</code>: Xử lý yêu cầu OPTIONS.</li>
+        </ul>
+
+        <h3>Ví dụ về phương thức GET và POST:</h3>
+        <pre><code>
+// GET request
+app.get('/user', (req, res) => {
+  res.json({ name: 'John Doe' });
+});
+
+// POST request
+app.post('/user', (req, res) => {
+  res.send('User data received');
+});
+    </code></pre>
+    </section>
+
+    <section>
+        <h2>5. Tuyến (Routes) trong Express</h2>
+        <p>Tuyến trong Express cho phép bạn định nghĩa các endpoint mà ứng dụng của bạn sẽ xử lý. Mỗi tuyến có thể kết hợp với các phương thức HTTP khác nhau để xử lý các yêu cầu.</p>
+
+        <h3>Cấu trúc tuyến (Route):</h3>
+        <pre><code>
+app.METHOD(path, handler)
+    </code></pre>
+
+        <p>Ví dụ:</p>
+        <pre><code>
+app.get('/hello', (req, res) => {
+  res.send('Hello World');
+});
+
+app.post('/data', (req, res) => {
+  res.send('POST request to /data');
+});
+    </code></pre>
+    </section>
+
+    <section>
+        <h2>6. Middleware trong Express</h2>
+        <p>Middleware là các hàm xử lý có thể được chèn vào chuỗi các yêu cầu HTTP, có thể thay đổi yêu cầu (request), phản hồi (response), hoặc kết thúc vòng đời của yêu cầu.</p>
+
+        <p>Ví dụ về middleware đơn giản:</p>
+        <pre><code>
+// Middleware để ghi log
+app.use((req, res, next) => {
+  console.log(`${req.method} ${req.url}`);
+  next();  // Chuyển đến middleware hoặc route tiếp theo
+});
+    </code></pre>
+    </section>
+
+    <section>
+        <h2>7. Quản lý lỗi trong Express</h2>
+        <p>Express cung cấp cơ chế xử lý lỗi dễ dàng. Bạn có thể định nghĩa các middleware xử lý lỗi để bắt và xử lý các lỗi phát sinh trong ứng dụng.</p>
+
+        <p>Ví dụ về middleware xử lý lỗi:</p>
+        <pre><code>
+// Middleware xử lý lỗi
+app.use((err, req, res, next) => {
+  console.error(err.stack);  // In lỗi ra console
+  res.status(500).send('Something went wrong!');
+});
+    </code></pre>
+    </section>
+
+    <section>
+        <h2>8. Tạo và sử dụng Template Engine</h2>
+        <p>Express hỗ trợ tích hợp với các hệ thống template như EJS, Pug, Handlebars, giúp bạn dễ dàng xây dựng giao diện động trong ứng dụng web.</p>
+
+        <h3>Cấu hình Template Engine với EJS:</h3>
+        <pre><code>
+1. Cài đặt EJS:
+npm install ejs
+
+2. Cấu hình Express để sử dụng EJS:
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
+
+3. Render view với EJS:
+app.get('/', (req, res) => {
+  res.render('index', { title: 'Express Example' });
+});
+    </code></pre>
+    </section>
+
+    <section>
+        <h2>9. Express và CORS (Cross-Origin Resource Sharing)</h2>
+        <p>CORS là cơ chế giúp cho phép hoặc từ chối các yêu cầu từ các nguồn (origin) khác nhau. Trong Express, bạn có thể sử dụng middleware để xử lý CORS.</p>
+
+        <p>Cài đặt và sử dụng CORS middleware:</p>
+        <pre><code>
+npm install cors
+const cors = require('cors');
+app.use(cors());  // Mở CORS cho tất cả các nguồn
+    </code></pre>
+    </section>
+
+    <section>
+        <h2>10. Kết nối với cơ sở dữ liệu</h2>
+        <p>Express thường được sử dụng kết hợp với cơ sở dữ liệu để xây dựng các ứng dụng web động. Các cơ sở dữ liệu phổ biến có thể là MongoDB (NoSQL) hoặc MySQL (SQL).</p>
+
+        <h3>Kết nối với MongoDB bằng Mongoose:</h3>
+        <pre><code>
+npm install mongoose
+
+const mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost/mydb', { useNewUrlParser: true, useUnifieNdTopology: true })
+  .then(() => console.log('Connected to MongoDB'))
+  .catch(err => console.log('Failed to connect', err));
+    </code></pre>
+    </section>
+
+    <section>
+        <h2>11. Chạy ứng dụng Express</h2>
+        <p>Cuối cùng, sau khi đã xây dựng xong ứng dụng, bạn cần chạy ứng dụng Express bằng cách sử dụng <code>app.listen()</code>.</p>
+        <pre><code>
+app.listen(3000, () => {
+  console.log('Server is running on port 3000');
+});
+    </code></pre>
+    </section>
+
+
+</body>
+
+</html>
